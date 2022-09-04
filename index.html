@@ -8,6 +8,12 @@
       integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
       crossorigin="anonymous"
     />
+    <script src="https://w3c.github.io/webappsec-trusted-types/dist/es5/trustedtypes.build.js"></script>
+  <script>
+    const ttPolicy = trustedTypes.createPolicy('TTrestograde', {
+      createHTML: (input) => { return input.replace("<scr" + "ipt>", "<span>").replace("</scr" + "ipt>", "</span>")}
+    });
+  </script>
   </head>
   <body>
     <div class="container">
@@ -52,7 +58,7 @@
 
     <script>
       function init() {
-        // enableTrustedTypes();
+        enableTrustedTypes();
 
         document.getElementById('init').hidden = true;
         loadReviews();
@@ -79,15 +85,28 @@
       ];
 
       function loadReviews() {
-        let reviewData = '';
+        let reviewData = [];
         let i = 0;
         reviews.forEach((r) => {
-          reviewData += `<h3 class="mt-5">${r.title}</h3><p>${
-            r.content
-          }</p><button onclick="editReview(${i++})" class="btn btn-primary btn-sm">Edit review</button>`;
+          let h3 = document.createElement('h3');
+          h3.setAttribute('class', 'mt-5');
+          h3.textContent = r.title;
+          reviewData.push(h3);
+
+          let p = document.createElement('p');
+          p.innerHTML = ttPolicy.createHTML(r.content);
+          reviewData.push(p);
+
+          let btn = document.createElement('button');
+          btn.addEventListener('click', () => {
+            editReview(i++);
+          });
+          btn.setAttribute('class', 'btn btn-primary btn-sm');
+          btn.textContent = 'Edit Review';
+          reviewData.push(btn);
         });
 
-        document.getElementById('list-content').innerHTML = reviewData;
+        document.getElementById('list-content').replaceChildren(...reviewData);
         document.getElementById('list').hidden = false;
         document.getElementById('edit').hidden = true;
       }

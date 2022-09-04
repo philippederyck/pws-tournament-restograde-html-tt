@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Restograde</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+      integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="text-center">Welcome to Restograde</h1>
+
+      <div class="row" id="init">
+        <div class="col text-center mt-5">
+          <button class="btn btn-primary" onclick="init()">
+            Load the latest reviews
+          </button>
+        </div>
+      </div>
+
+      <div class="row my-5" id="list" hidden="true">
+        <div class="col" id="list-content"></div>
+      </div>
+
+      <div class="row my-5" id="edit" hidden="true">
+        <div class="col text-center">
+          <div class="form-group">
+            <input
+              type="text"
+              id="title"
+              name="title"
+              class="form-control my-2"
+            />
+            <textarea
+              type="text"
+              id="content"
+              name="content"
+              class="form-control"
+              rows="7"
+            ></textarea>
+          </div>
+
+          <button onclick="saveReview()" class="btn btn-primary">
+            Save Review
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function init() {
+        // enableTrustedTypes();
+
+        document.getElementById('init').hidden = true;
+        loadReviews();
+      }
+
+      let editIndex = -1;
+
+      let reviews = [
+        {
+          title: 'Too saucy!',
+          content:
+            '<b>The quality of the food is poor</b>. Too much sauce on everything. I would not return to this place. Price is way to high for what you get.',
+        },
+        {
+          title: 'Dual standards',
+          content:
+            'As locals we can say that this was our last visit. We were surprised by the downfall to his place. It <b><i>used to be</i></b> a very good price/quality, but now we are really disappointed. I ordered the same starter as my husband, but got half the portion that he got.  After we informed the staff, the owner came to yell at us. I have never been more humiliated in my life.',
+        },
+        {
+          title: 'Just so so',
+          content:
+            'We were well received, the staff was OK, but we didn’t like the food. Not spectacular, but also not bad.',
+        },
+      ];
+
+      function loadReviews() {
+        let reviewData = '';
+        let i = 0;
+        reviews.forEach((r) => {
+          reviewData += `<h3 class="mt-5">${r.title}</h3><p>${
+            r.content
+          }</p><button onclick="editReview(${i++})" class="btn btn-primary btn-sm">Edit review</button>`;
+        });
+
+        document.getElementById('list-content').innerHTML = reviewData;
+        document.getElementById('list').hidden = false;
+        document.getElementById('edit').hidden = true;
+      }
+
+      function editReview(index) {
+        editIndex = index;
+        // Load the review data for editing
+        let review = reviews[index];
+        document.getElementById('title').value = review.title;
+        document.getElementById('content').value = review.content;
+
+        document.getElementById('edit').hidden = false;
+        document.getElementById('list').hidden = true;
+      }
+
+      function saveReview() {
+        // Update the review data
+        let review = reviews[editIndex];
+        review.title = document.getElementById('title').value;
+        review.content = document.getElementById('content').value;
+
+        // Show the reviews
+        loadReviews();
+      }
+
+      function enableTrustedTypes() {
+        /*
+         * Stackblitz relies on `outerHTML` to bootstrap the page, which breaks
+         * when enabling TT in the page header. This workaround should !!NOT!! be
+         * used in real applications, but works for this Stackblitz example
+         */
+        const trustedTypesHeader = document.createElement('meta');
+        trustedTypesHeader.setAttribute(
+          'http-equiv',
+          'Content-Security-Policy'
+        );
+        trustedTypesHeader.setAttribute(
+          'content',
+          "require-trusted-types-for 'script'"
+        );
+        document.querySelector('head').appendChild(trustedTypesHeader);
+      }
+    </script>
+  </body>
+</html>

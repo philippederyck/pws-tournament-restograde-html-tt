@@ -79,6 +79,15 @@
       ];
 
       function loadReviews() {
+        loadReviewsOriginal();
+
+        // loadReviewsSolution1();
+        // loadReviewsSolution2();
+        // loadReviewsSolution3();
+        // loadReviewsSolution4();
+      }
+
+      function loadReviewsOriginal() {
         let reviewData = '';
         let i = 0;
         reviews.forEach((r) => {
@@ -88,6 +97,114 @@
         });
 
         document.getElementById('list-content').innerHTML = reviewData;
+        document.getElementById('list').hidden = false;
+        document.getElementById('edit').hidden = true;
+      }
+
+      function loadReviewsSolution1() {
+        let reviewData = [];
+        let i = 0;
+        reviews.forEach((r) => {
+          let h3 = document.createElement('h3');
+          h3.setAttribute('class', 'mt-5');
+          h3.textContent = r.title;
+          reviewData.push(h3);
+
+          let p = document.createElement('p');
+          p.innerHTML = r.content;
+          reviewData.push(p);
+
+          let btn = document.createElement('button');
+          btn.addEventListener('click', () => {
+            editReview(i++);
+          });
+          btn.setAttribute('class', 'btn btn-primary btn-sm');
+          btn.textContent = 'Edit Review';
+          reviewData.push(btn);
+        });
+
+        document.getElementById('list-content').replaceChildren(...reviewData);
+        document.getElementById('list').hidden = false;
+        document.getElementById('edit').hidden = true;
+      }
+
+      function loadReviewsSolution2() {
+        let reviewData = [];
+        let i = 0;
+        reviews.forEach((r) => {
+          let h3 = document.createElement('h3');
+          h3.setAttribute('class', 'mt-5');
+          h3.textContent = r.title;
+          reviewData.push(h3);
+
+          let p = document.createElement('p');
+          p.textContent = r.content;
+          reviewData.push(p);
+
+          let btn = document.createElement('button');
+          btn.addEventListener('click', () => {
+            editReview(i++);
+          });
+          btn.setAttribute('class', 'btn btn-primary btn-sm');
+          btn.textContent = 'Edit Review';
+          reviewData.push(btn);
+        });
+
+        document.getElementById('list-content').replaceChildren(...reviewData);
+        document.getElementById('list').hidden = false;
+        document.getElementById('edit').hidden = true;
+      }
+
+      function loadReviewsSolution3() {
+        let reviewData = [];
+        let i = 0;
+        reviews.forEach((r) => {
+          let h3 = document.createElement('h3');
+          h3.setAttribute('class', 'mt-5');
+          h3.textContent = r.title;
+          reviewData.push(h3);
+
+          let p = document.createElement('p');
+          p.innerHTML = DOMPurify.sanitize(r.content);
+          reviewData.push(p);
+
+          let btn = document.createElement('button');
+          btn.addEventListener('click', () => {
+            editReview(i++);
+          });
+          btn.setAttribute('class', 'btn btn-primary btn-sm');
+          btn.textContent = 'Edit Review';
+          reviewData.push(btn);
+        });
+
+        document.getElementById('list-content').replaceChildren(...reviewData);
+        document.getElementById('list').hidden = false;
+        document.getElementById('edit').hidden = true;
+      }
+
+      function loadReviewsSolution4() {
+        let reviewData = [];
+        let i = 0;
+        reviews.forEach((r) => {
+          let h3 = document.createElement('h3');
+          h3.setAttribute('class', 'mt-5');
+          h3.textContent = r.title;
+          reviewData.push(h3);
+
+          let p = document.createElement('p');
+          p.innerHTML = DOMPurify.sanitize(r.content, {RETURN_TRUSTED_TYPE: true});
+          reviewData.push(p);
+
+          let btn = document.createElement('button');
+          btn.addEventListener('click', () => {
+            editReview(i++);
+          });
+          btn.setAttribute('class', 'btn btn-primary btn-sm');
+          btn.textContent = 'Edit Review';
+          reviewData.push(btn);
+        });
+
+        document.getElementById('list-content').replaceChildren(...reviewData);
         document.getElementById('list').hidden = false;
         document.getElementById('edit').hidden = true;
       }
@@ -131,5 +248,6 @@
         document.querySelector('head').appendChild(trustedTypesHeader);
       }
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js" integrity="sha512-/hVAZO5POxCKdZMSLefw30xEVwjm94PAV9ynjskGbIpBvHO9EBplEcdUlBdCKutpZsF+La8Ag4gNrG0gAOn3Ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   </body>
 </html>
